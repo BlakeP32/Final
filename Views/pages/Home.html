@@ -1,0 +1,129 @@
+  
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <title>Movie</title>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        </head>
+	<style type="text/css">
+	* {
+	  box-sizing: border-box;
+	}
+
+	/* Style the search field */
+	form.example input[type=text] {
+	  padding: 10px;
+	  font-size: 17px;
+	  border: 1px solid grey;
+	  float: left;
+	  width: 80%;
+	  background: #f1f1f1;
+	}
+
+	/* Style the submit button */
+	form.example button {
+	  float: left;
+	  width: 20%;
+	  padding: 10px;
+	  background: #2196F3;
+	  color: white;
+	  font-size: 17px;
+	  border: 1px solid grey;
+	  border-left: none; /* Prevent double borders */
+	  cursor: pointer;
+	}
+
+	form.example button:hover {
+	  background: #0b7dda;
+	}
+
+	/* Clear floats */
+	form.example::after {
+	  content: "";
+	  clear: both;
+	  display: table;
+	}
+	</style>
+	<script type="text/javascript" src="../../resources/js/script.js"></script>
+	<script type="text/javascript">
+function makeApiCall(page){
+  clear();
+  var title = document.getElementById('input').value;
+  $.getJSON("http://www.omdbapi.com/?i=tt3896198&apikey=44a9aaed&s="+encodeURI(title)).then(function(response){
+    console.log(response);
+    var i;
+    for(i = 0; i < response.totalResults; i++){
+     document.getElementById('pc').innerHTML +=
+            `<div class="card" style="width: 33%;">
+              <a href="${response.Search[i].Poster}"> <img class="card-img-top" 
+              src = '${response.Search[i].Poster}' 
+              alt = 'Movie Poster'> </a>
+              <div class="card-body">
+                <p class="card-text"> ${response.Search[i].Title} </p>
+              </div>
+              <div>
+               <button id="submit" class="btn btn-primary" type='button' onclick="openResponse(response.Search[i].Title);">
+               <a class="nav-link" href="../partials/review.html" style="color:white">Review</a>
+               </button>
+              </div>
+            </div>`
+    }
+  });
+}
+function clear(){ 
+  document.getElementById('pc').innerHTML="";
+}
+function openResponse(movie)
+{
+	document.getElementById('inputMOV').innerHTML = movie;
+}
+	</script>
+</head>
+<body>
+	      <nav class="navbar navbar-expand-sm bg-dark justify-content-left">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="../pages/Home.html" style="color:grey">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../pages/Search.html" style="color:white">Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../partials/review.html" style="color:white">Review</a>
+          </li>
+
+        </ul>
+      </nav>
+	    <div class="container">
+	    	
+            <form>
+                <div class="form-row">
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="input" placeholder="Search Movie Titles">
+                    </div>
+                    <div>
+                        <button id="submit" class="btn btn-primary" type='button' onclick="makeApiCall();clear();">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+		</div>
+        <br></br>
+
+        <div class="container">
+            <div class="row" id="pc">
+            </div>
+        </div>
+        
+</body>
+
+</html>
